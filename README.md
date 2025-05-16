@@ -7,7 +7,7 @@ Includes both the authentication and secure servers
 Install [Go](https://go.dev/doc/install) and [git](https://git-scm.com/downloads), then clone and enter the repository
 
 ```bash
-$ git clone https://github.com/PretendoNetwork/call-of-duty-black-ops-2
+$ git clone https://github.com/rraptor06/call-of-duty-black-ops-2
 $ cd call-of-duty-black-ops-2
 ```
 

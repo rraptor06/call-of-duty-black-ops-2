@@ -11,7 +11,6 @@ import (
 	"github.com/PretendoNetwork/nex-go/v2"
 	"github.com/PretendoNetwork/nex-go/v2/types"
 	"github.com/PretendoNetwork/plogger-go"
-	"github.com/PretendoNetwork/tri-force-heroes/database"
 	"github.com/joho/godotenv"
 	"github.com/rraptor06/call-of-duty-black-ops-2/globals"
 	"google.golang.org/grpc"
@@ -29,18 +28,12 @@ func init() {
 		globals.Logger.Warning("Error loading .env file")
 	}
 
-	postgresURI := os.Getenv("PN_TFH_POSTGRES_URI")
-	authenticationServerPort := os.Getenv("PN_TFH_AUTHENTICATION_SERVER_PORT")
-	secureServerHost := os.Getenv("PN_CODB_SECURE_SERVER_HOST")
-	secureServerPort := os.Getenv("PN_TFH_SECURE_SERVER_PORT")
-	accountGRPCHost := os.Getenv("PN_TFH_ACCOUNT_GRPC_HOST")
-	accountGRPCPort := os.Getenv("PN_TFH_ACCOUNT_GRPC_PORT")
-	accountGRPCAPIKey := os.Getenv("PN_TFH_ACCOUNT_GRPC_API_KEY")
-
-	if strings.TrimSpace(postgresURI) == "" {
-		globals.Logger.Error("PN_TFH_POSTGRES_URI environment variable not set")
-		os.Exit(0)
-	}
+	authenticationServerPort := os.Getenv("PN_COD_AUTHENTICATION_SERVER_PORT")
+	secureServerHost := os.Getenv("PN_COD_SECURE_SERVER_HOST")
+	secureServerPort := os.Getenv("PN_COD_SECURE_SERVER_PORT")
+	accountGRPCHost := os.Getenv("PN_COD_ACCOUNT_GRPC_HOST")
+	accountGRPCPort := os.Getenv("PN_COD_ACCOUNT_GRPC_PORT")
+	accountGRPCAPIKey := os.Getenv("PN_COD_ACCOUNT_GRPC_API_KEY")
 
 	kerberosPassword := make([]byte, 0x10)
 	_, err = rand.Read(kerberosPassword)
@@ -55,56 +48,56 @@ func init() {
 	globals.SecureServerAccount = nex.NewAccount(types.NewPID(2), "Quazal Rendez-Vous", globals.KerberosPassword)
 
 	if strings.TrimSpace(authenticationServerPort) == "" {
-		globals.Logger.Error("PN_TFH_AUTHENTICATION_SERVER_PORT environment variable not set")
+		globals.Logger.Error("PN_COD_AUTHENTICATION_SERVER_PORT environment variable not set")
 		os.Exit(0)
 	}
 
 	if port, err := strconv.Atoi(authenticationServerPort); err != nil {
-		globals.Logger.Errorf("PN_TFH_AUTHENTICATION_SERVER_PORT is not a valid port. Expected 0-65535, got %s", authenticationServerPort)
+		globals.Logger.Errorf("PN_COD_AUTHENTICATION_SERVER_PORT is not a valid port. Expected 0-65535, got %s", authenticationServerPort)
 		os.Exit(0)
 	} else if port < 0 || port > 65535 {
-		globals.Logger.Errorf("PN_TFH_AUTHENTICATION_SERVER_PORT is not a valid port. Expected 0-65535, got %s", authenticationServerPort)
+		globals.Logger.Errorf("PN_COD_AUTHENTICATION_SERVER_PORT is not a valid port. Expected 0-65535, got %s", authenticationServerPort)
 		os.Exit(0)
 	}
 
 	if strings.TrimSpace(secureServerHost) == "" {
-		globals.Logger.Error("PN_TFH_SECURE_SERVER_HOST environment variable not set")
+		globals.Logger.Error("PN_COD_SECURE_SERVER_HOST environment variable not set")
 		os.Exit(0)
 	}
 
 	if strings.TrimSpace(secureServerPort) == "" {
-		globals.Logger.Error("PN_TFH_SECURE_SERVER_PORT environment variable not set")
+		globals.Logger.Error("PN_COD_SECURE_SERVER_PORT environment variable not set")
 		os.Exit(0)
 	}
 
 	if port, err := strconv.Atoi(secureServerPort); err != nil {
-		globals.Logger.Errorf("PN_TFH_SECURE_SERVER_PORT is not a valid port. Expected 0-65535, got %s", secureServerPort)
+		globals.Logger.Errorf("PN_COD_SECURE_SERVER_PORT is not a valid port. Expected 0-65535, got %s", secureServerPort)
 		os.Exit(0)
 	} else if port < 0 || port > 65535 {
-		globals.Logger.Errorf("PN_TFH_SECURE_SERVER_PORT is not a valid port. Expected 0-65535, got %s", secureServerPort)
+		globals.Logger.Errorf("PN_COD_SECURE_SERVER_PORT is not a valid port. Expected 0-65535, got %s", secureServerPort)
 		os.Exit(0)
 	}
 
 	if strings.TrimSpace(accountGRPCHost) == "" {
-		globals.Logger.Error("PN_TFH_ACCOUNT_GRPC_HOST environment variable not set")
+		globals.Logger.Error("PN_COD_ACCOUNT_GRPC_HOST environment variable not set")
 		os.Exit(0)
 	}
 
 	if strings.TrimSpace(accountGRPCPort) == "" {
-		globals.Logger.Error("PN_TFH_ACCOUNT_GRPC_PORT environment variable not set")
+		globals.Logger.Error("PN_COD_ACCOUNT_GRPC_PORT environment variable not set")
 		os.Exit(0)
 	}
 
 	if port, err := strconv.Atoi(accountGRPCPort); err != nil {
-		globals.Logger.Errorf("PN_TFH_ACCOUNT_GRPC_PORT is not a valid port. Expected 0-65535, got %s", accountGRPCPort)
+		globals.Logger.Errorf("PN_COD_ACCOUNT_GRPC_PORT is not a valid port. Expected 0-65535, got %s", accountGRPCPort)
 		os.Exit(0)
 	} else if port < 0 || port > 65535 {
-		globals.Logger.Errorf("PN_TFH_ACCOUNT_GRPC_PORT is not a valid port. Expected 0-65535, got %s", accountGRPCPort)
+		globals.Logger.Errorf("PN_COD_ACCOUNT_GRPC_PORT is not a valid port. Expected 0-65535, got %s", accountGRPCPort)
 		os.Exit(0)
 	}
 
 	if strings.TrimSpace(accountGRPCAPIKey) == "" {
-		globals.Logger.Warning("Insecure gRPC server detected. PN_TFH_ACCOUNT_GRPC_API_KEY environment variable not set")
+		globals.Logger.Warning("Insecure gRPC server detected. PN_COD_ACCOUNT_GRPC_API_KEY environment variable not set")
 	}
 
 	globals.GRPCAccountClientConnection, err = grpc.Dial(fmt.Sprintf("%s:%s", accountGRPCHost, accountGRPCPort), grpc.WithTransportCredentials(insecure.NewCredentials()))
@@ -117,6 +110,4 @@ func init() {
 	globals.GRPCAccountCommonMetadata = metadata.Pairs(
 		"X-API-Key", accountGRPCAPIKey,
 	)
-
-	database.ConnectPostgres()
 }
